@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./src/css/index.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="./src/utils.js" defer></script>
+    <script type="module" src="./src/index.js" defer></script>
+    <title>Pokemon</title>
+  </head>
+  <body>
+    <header class="header">
+      <nav>
+        <h1>Pokedex</h1>
+        <ul>
+          <!-- <li><a href="#">Home</a></li>
+          <li><a href="#">Search</a></li> -->
+        </ul>
+      </nav>
+    </header>
+    <main class="container" id="root">
+      <section id="pokedex">
+        <div class="top-machine">
+          <div class="blue"></div>
+          <div class="bordeaux"></div>
+          <div class="green"></div>
+          <div class="yellow"></div>
+        </div>
+        <div class="pokeScreen">
+          <img src="" alt="" />
+        </div>
+        <article class="display">
+          <div id="previous">
+            <span class="material-symbols-outlined">arrow_drop_up</span>
+          </div>
+          <div class="content">
+            <p></p>
+          </div>
+          <div id="next">
+            <span class="material-symbols-outlined">arrow_drop_down</span>
+          </div>
+        </article>
+        <div class="back"></div>
+      </section>
+    </main>
+    <footer class="header footer"></footer>
+  </body>
+</html>
