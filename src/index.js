@@ -52,6 +52,9 @@ function sweet() {
         const pokemon = await getPokemon(index);
         pokeCard(pokemon);
       }
+    } else {
+      const pokemon = await getPokemon(res.value);
+      pokeCard(pokemon);
     }
   });
 }
@@ -169,8 +172,10 @@ const idFixer = (number) => {
   if (!isNaN(number)) {
     const length = String(number).length;
     return ID_FIXER[length](number);
+  } else {
+    index = 0;
+    return `#?????`;
   }
-  return `#?????`;
 };
 
 const pokeCard = async (pokemon) => {
