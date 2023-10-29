@@ -17,12 +17,6 @@ const removeClass = (element, className) => {
 const setLS = (key, value) => localStorage.setItem(key, value);
 
 const getLS = (key) => localStorage.getItem(key);
-const showErr = (msg) => {
-  $text("#error", msg);
-  setTimeout(() => {
-    $text("#error", " ");
-  }, 3000);
-};
 
 const create = (node) => {
   return document.createElement(node);

@@ -6,7 +6,19 @@ const previousButton = $("#previous");
 
 const MAX_ID = 10275;
 
+let index = 0;
+
 previousButton.style.visibility = "hidden";
+
+document.addEventListener("keydown", preventKeyBoardScroll, false);
+
+function preventKeyBoardScroll(e) {
+  var keys = [32, 33, 34, 35, 37, 38, 39, 40];
+  if (keys.includes(e.keyCode)) {
+    e.preventDefault();
+    return false;
+  }
+}
 
 function sweet() {
   backDex.style.opacity = 0;
@@ -14,27 +26,35 @@ function sweet() {
     title: "Pokemon",
     text: "Write the index or name of the pokemon",
     input: "text",
+    target: document.querySelector("body"),
+    padding: "-19px",
     inputValidator: (value) => {
       return !value.trim() && "Please, write the pokemon name or number";
     },
+    confirmButtonColor: "black",
+    confirmButtonText: "ENTER",
+    customClass: {
+      container: "swal2-container",
+      title: "title",
+      htmlContainer: "htmlContainer",
+    },
     allowOutsideClick: false,
-    // timer: 2000,
     width: "30rem",
     background: "yellowgreen",
   }).then(async (res) => {
-    const pokemon = await getPokemon(res.value);
-    index = pokemon.id;
-    pokeCard(pokemon);
+    if (!isNaN(res.value)) {
+      if (res.value <= MAX_ID) {
+        const pokemon = await getPokemon(res.value);
+        index = pokemon.id;
+        pokeCard(pokemon);
+      } else {
+        index = 1;
+        const pokemon = await getPokemon(index);
+        pokeCard(pokemon);
+      }
+    }
   });
 }
-
-// arrow_down = document.createTextNode("arrow_drop_down");
-
-// previousButton.classList.add("material-symbols-outlined blink");
-// addClass(previousButton, "blink");
-// addClass(nextButton, "material-symbols-outlined");
-
-let index = 0;
 
 const language = window.navigator.language;
 
@@ -51,7 +71,6 @@ const pokeScreen = $(".pokeScreen img");
 pokeScreen.style.display = "none";
 
 const intro = [
-  // "Welcome! Use arrows to navigate Pokedex. For a specific Pokemon, tap the blue lens",
   "Welcome, use the arrows to navigate in your Pokedex. If you're looking for a specific Pokemon, tap the blue lens of the Pokedex",
   "Termine. ",
 ];
@@ -59,7 +78,6 @@ const intro = [
 // const
 
 let i = 0;
-const arrayText = [...intro];
 
 const resetDisplay = () => {
   display.innerHTML = "";
@@ -110,10 +128,12 @@ async function arrowsController(event) {
     pokeScreen.style.display = "none";
     backDex.style.opacity = 0;
     backDex.style.visibility = "hidden";
-    i = 0;
-    index++;
-    const pokemon = await getPokemon(index);
-    pokeCard(pokemon);
+    if (index <= MAX_ID) {
+      i = 0;
+      index++;
+      const pokemon = await getPokemon(index);
+      pokeCard(pokemon);
+    }
   }
 
   if (index > 1 && event.key === "ArrowUp") {
@@ -150,8 +170,11 @@ const ID_FIXER = {
   },
 };
 const idFixer = (number) => {
-  const length = String(number).length;
-  return ID_FIXER[length](number);
+  if (!isNaN(number)) {
+    const length = String(number).length;
+    return ID_FIXER[length](number);
+  }
+  return `#?????`;
 };
 
 const pokeCard = async (pokemon) => {
@@ -162,12 +185,13 @@ const pokeCard = async (pokemon) => {
       ? pokemon.sprites.other.dream_world.front_default
       : `https://res.cloudinary.com/didni0nof/image/upload/v1698132347/Pngtree_question_mark_vector_icon_3722522_pe6rvj.png`;
   pokeScreen.setAttribute("src", `${image}`);
-  const weight = !Number.isNaN(pokemon.weight)
-    ? Number(pokemon.weight / 10).toFixed(1)
-    : pokemon.weight;
-  const height = !Number.isNaN(pokemon.height)
-    ? Number(pokemon.height / 10).toFixed(1)
-    : pokemon.height;
+
+  const weight = isNaN(pokemon.weight)
+    ? pokemon.weight
+    : Number(pokemon.weight / 10).toFixed(1);
+  const height = isNaN(pokemon.height)
+    ? pokemon.height
+    : Number(pokemon.height / 10).toFixed(1);
   const id = idFixer(pokemon.id);
   const infoTemplate = [
     `${id}`,
@@ -192,17 +216,15 @@ const typeEffect = () => {
     setTimeout(typeEffect, 80);
   } else {
     display.innerHTML += "<span class='blink'>▮</span>";
-    // $("#next").appendChild(nextButton);
     addClass(nextButton, "blink");
-    // addClass(previousButton, "blink");
+
     document.addEventListener("keyup", arrowsController);
     $(".blue").addEventListener("click", sweet);
   }
 };
-// addClass(previousButton, "blink");
+
 backDex.addEventListener("click", function intro() {
   backDex.style.transform = "translateY(40.5rem)";
-  // backDex.style.transform = "translateX(30rem)";
   backDex.removeEventListener("click", intro);
   setTimeout(() => {
     typeEffect(intro);
@@ -224,6 +246,7 @@ const getPokemon = async (index) => {
       sprites: {
         other: { dream_world: { front_default: null } },
       },
+      error: "error",
     };
   }
 };
