@@ -108,6 +108,8 @@ const typingEffect = (infoTemplate, content, time = 50) => {
         }
 
         document.addEventListener("keyup", arrowsController);
+        nextButton.addEventListener("click", nextButtonController);
+        previousButton.addEventListener("click", previousButtonController);
         $(".blue").addEventListener("click", sweet);
         clearInterval(typing);
       }
@@ -117,6 +119,41 @@ const typingEffect = (infoTemplate, content, time = 50) => {
   );
 };
 
+async function previousButtonController() {
+  removeClass(previousButton, "blink");
+  removeClass(nextButton, "blink");
+  document.removeEventListener("keyup", arrowsController);
+  nextButton.removeEventListener("click", nextButtonController);
+  previousButton.removeEventListener("click", previousButtonController);
+  $(".blue").removeEventListener("click", sweet);
+  if (index > 1) {
+    pokeScreen.style.display = "none";
+    backDex.style.opacity = 0;
+    i = 0;
+    --index;
+    const pokemon = await getPokemon(index);
+    pokeCard(pokemon);
+  }
+}
+
+async function nextButtonController() {
+  removeClass(previousButton, "blink");
+  removeClass(nextButton, "blink");
+  document.removeEventListener("keyup", arrowsController);
+  nextButton.removeEventListener("click", nextButtonController);
+  previousButton.removeEventListener("click", previousButtonController);
+  $(".blue").removeEventListener("click", sweet);
+
+  pokeScreen.style.display = "none";
+  backDex.style.opacity = 0;
+  backDex.style.visibility = "hidden";
+  if (index <= MAX_ID) {
+    i = 0;
+    index++;
+    const pokemon = await getPokemon(index);
+    pokeCard(pokemon);
+  }
+}
 async function arrowsController(event) {
   if (event.key === "ArrowDown") {
     removeClass(previousButton, "blink");
@@ -139,6 +176,8 @@ async function arrowsController(event) {
     removeClass(previousButton, "blink");
     removeClass(nextButton, "blink");
     document.removeEventListener("keyup", arrowsController);
+    nextButton.removeEventListener("click", nextButtonController);
+    previousButton.removeEventListener("click", previousButtonController);
     $(".blue").removeEventListener("click", sweet);
     if (index > 1) {
       pokeScreen.style.display = "none";
@@ -220,6 +259,7 @@ const typeEffect = () => {
     addClass(nextButton, "blink");
 
     document.addEventListener("keyup", arrowsController);
+    nextButton.addEventListener("click", nextButtonController);
     $(".blue").addEventListener("click", sweet);
   }
 };
