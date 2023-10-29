@@ -82,6 +82,7 @@ ul {
     width: 85%;
     margin: auto;
     min-height: 85vh;
+    overflow: hidden;
     padding: var(--space-lg) 0 var(--space-lg) 0;
 }
 
