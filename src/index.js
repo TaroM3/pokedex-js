@@ -60,8 +60,6 @@ const language = window.navigator.language;
 
 setLS("language", language);
 
-console.log(language);
-
 const backDex = $(".back");
 
 const display = $(".content p");
@@ -74,8 +72,6 @@ const intro = [
   "Welcome, use the arrows to navigate in your Pokedex. If you're looking for a specific Pokemon, tap the blue lens of the Pokedex",
   "Termine. ",
 ];
-
-// const
 
 let i = 0;
 
