@@ -42,8 +42,8 @@ function sweet() {
     width: "30rem",
     background: "yellowgreen",
   }).then(async (res) => {
-    if (!isNaN(res.value)) {
-      if (res.value <= MAX_ID) {
+    if (!isNaN(Number(res.value))) {
+      if (Number(res.value) <= MAX_ID) {
         const pokemon = await getPokemon(res.value);
         index = pokemon.id;
         pokeCard(pokemon);
@@ -53,7 +53,7 @@ function sweet() {
         pokeCard(pokemon);
       }
     } else {
-      const pokemon = await getPokemon(res.value);
+      const pokemon = await getPokemon(res.value.toLowerCase());
       pokeCard(pokemon);
     }
   });
@@ -210,6 +210,7 @@ const ID_FIXER = {
 const idFixer = (number) => {
   if (!isNaN(number)) {
     const length = String(number).length;
+    index = number;
     return ID_FIXER[length](number);
   } else {
     index = 0;
